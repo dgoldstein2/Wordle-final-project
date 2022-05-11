@@ -41,7 +41,7 @@ public class Wordle {
         }
         for (int z = 0; z<x.length;z++){
             if (x[z] == 0){
-                WordleGWindow.setSquareColor();
+                WordleGWindow.setSquareColor(count, z, );
             }
             if (x[z] == 1){
 
