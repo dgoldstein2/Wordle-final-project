@@ -17,7 +17,7 @@ public class Wordle {
     public void run() {
         gw = new WordleGWindow();
         gw.addEnterListener((s) -> enterAction(s));
-
+        answer = WordleDictionary.FIVE_LETTER_WORDS[(int)Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length+1];
     }
 
 /*
@@ -26,6 +26,7 @@ public class Wordle {
  */
 
     public void enterAction(String s) {
+        
         for(int i = 0;i<answer.length();i++){
             for(int j = 0; j<s.length();j++){
                 if (s.substring(j,j+1).equals(answer.substring(i,i+1))){
@@ -41,20 +42,21 @@ public class Wordle {
         }
         for (int z = 0; z<x.length;z++){
             if (x[z] == 0){
-                WordleGWindow.setSquareColor(count, z, );
+                gw.setSquareColor(count, z, WordleGWindow.PRESENT_COLOR);
             }
             if (x[z] == 1){
-
+                gw.setSquareColor(count, z, WordleGWindow.CORRECT_COLOR);
             }
             if (x[z] == -1){
-
+                gw.setSquareColor(count, z, WordleGWindow.MISSING_COLOR);
             }
+            
 
         }
-        if (count < WordleGWindow.N_ROWS) {
+        if (count < WordleGWindow.N_ROWS-1) {
         count++;
         gw.setCurrentRow(count);
-        run();
+        gw.addEnterListener((r) -> enterAction(r));
         }
         else{
             gw.showMessage("The answer was " + answer);
