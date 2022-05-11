@@ -8,11 +8,16 @@
 import edu.willamette.cs1.wordle.WordleDictionary;
 import edu.willamette.cs1.wordle.WordleGWindow;
 
+
 public class Wordle {
+    private int count = 0;
+    private String answer = WordleDictionary.FIVE_LETTER_WORDS[(int)Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length+1];
+    private int[] x = new int [5];
 
     public void run() {
         gw = new WordleGWindow();
         gw.addEnterListener((s) -> enterAction(s));
+
     }
 
 /*
@@ -21,7 +26,39 @@ public class Wordle {
  */
 
     public void enterAction(String s) {
-        gw.showMessage("You have to implement this method.");
+        for(int i = 0;i<answer.length();i++){
+            for(int j = 0; j<s.length();j++){
+                if (s.substring(j,j+1).equals(answer.substring(i,i+1))){
+                    x[i] = 0; // 1 =  green, 0 = yellow, -1 = grey
+                }
+                if(s.substring(i,i+1).equals(answer.substring(i,i+1))){
+                    x[i] = 1;
+                }
+                else{
+                    x[i] = -1;
+                }
+            }
+        }
+        for (int z = 0; z<x.length;z++){
+            if (x[z] == 0){
+                WordleGWindow.setSquareColor();
+            }
+            if (x[z] == 1){
+
+            }
+            if (x[z] == -1){
+
+            }
+
+        }
+        if (count < WordleGWindow.N_ROWS) {
+        count++;
+        gw.setCurrentRow(count);
+        run();
+        }
+        else{
+            gw.showMessage("The answer was " + answer);
+        }
     }
 
 /* Startup code */
