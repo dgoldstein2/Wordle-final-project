@@ -28,12 +28,13 @@ public class Wordle {
     public void enterAction(String s) {
         
         for(int i = 0;i<answer.length();i++){
-            for(int j = 0; j<s.length();j++){
-                if (s.substring(j,j+1).equals(answer.substring(i,i+1))){
-                    x[i] = 0; // 1 =  green, 0 = yellow, -1 = grey
-                }
-                if(s.substring(i,i+1).equals(answer.substring(i,i+1))){
+            for(int j = 0; j<5;j++){
+                
+                if(gw.getSquareLetter(count, j).equals(answer.substring(i,i+1))){
                     x[i] = 1;
+                }
+                else if (gw.getSquareLetter(count, j).equals(answer.substring(i,i+1))){
+                    x[i] = 0; // 1 =  green, 0 = yellow, -1 = grey
                 }
                 else{
                     x[i] = -1;
@@ -53,14 +54,32 @@ public class Wordle {
             
 
         }
+        
         if (count < WordleGWindow.N_ROWS-1) {
         count++;
-        gw.setCurrentRow(count);
+        if(isAllGreen(count)){
+            gw.showMessage("Fantastic");
+        }
+        else{gw.setCurrentRow(count);
         gw.addEnterListener((r) -> enterAction(r));
         }
-        else{
-            gw.showMessage("The answer was " + answer);
+        
         }
+        else{
+            if(isAllGreen(count)){
+                gw.showMessage("That was close");
+            }
+            else{gw.showMessage("The answer was " + answer);}
+        }
+    }
+    public boolean isAllGreen(int z){
+        boolean x = true;
+        for(int i = 0; i<5; i++){
+            if(!gw.getSquareColor(z, i).equals(WordleGWindow.CORRECT_COLOR)){
+                x= false;
+            }
+        }
+        return x;
     }
 
 /* Startup code */
