@@ -13,11 +13,13 @@ public class Wordle {
     private int count = 0;
     private String answer = WordleDictionary.FIVE_LETTER_WORDS[(int)Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length+1];
     private int[] x = new int [5];
+    private String answerCap = answer.toUpperCase();
 
     public void run() {
         gw = new WordleGWindow();
-        gw.addEnterListener((s) -> enterAction(s));
         answer = WordleDictionary.FIVE_LETTER_WORDS[(int)Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length+1];
+        gw.addEnterListener((s) -> enterAction(s));
+        
     }
 
 /*
@@ -25,22 +27,25 @@ public class Wordle {
  * passing in the string of characters on the current row.
  */
 
-    public void enterAction(String s) {
+    public void enterAction(String s){
         
-        for(int i = 0;i<answer.length();i++){
+        
             for(int j = 0; j<5;j++){
                 
-                if(gw.getSquareLetter(count, j).equals(answer.substring(i,i+1))){
-                    x[i] = 1;
+                if(answerCap.substring(j,j+1).equals(gw.getSquareLetter(gw.getCurrentRow(), j))){
+                    x[j] = 1;
                 }
-                else if (gw.getSquareLetter(count, j).equals(answer.substring(i,i+1))){
-                    x[i] = 0; // 1 =  green, 0 = yellow, -1 = grey
+                else if(answerCap.contains(gw.getSquareLetter(gw.getCurrentRow(), j))){
+                    x[j] = 0;
                 }
+                
                 else{
-                    x[i] = -1;
+                    x[j] = -1;
                 }
+            
+                
             }
-        }
+        
         for (int z = 0; z<x.length;z++){
             if (x[z] == 0){
                 gw.setSquareColor(count, z, WordleGWindow.PRESENT_COLOR);
@@ -57,14 +62,15 @@ public class Wordle {
         
         if (count < WordleGWindow.N_ROWS-1) {
         count++;
-        if(isAllGreen(count)){
+        if(isAllGreen(gw.getCurrentRow())){
             gw.showMessage("Fantastic");
         }
         else{gw.setCurrentRow(count);
         gw.addEnterListener((r) -> enterAction(r));
         }
-        
         }
+        
+        
         else{
             if(isAllGreen(count)){
                 gw.showMessage("That was close");
