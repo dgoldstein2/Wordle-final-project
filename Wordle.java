@@ -11,13 +11,15 @@ import edu.willamette.cs1.wordle.WordleGWindow;
 
 public class Wordle {
     private int count = 0;
-    private String answer = WordleDictionary.FIVE_LETTER_WORDS[(int)Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length+1];
+    private String answer = WordleDictionary.FIVE_LETTER_WORDS[(int)(Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length)+1];
     private int[] x = new int [5];
     private String answerCap = answer.toUpperCase();
+    private String temp = answerCap;
 
     public void run() {
         gw = new WordleGWindow();
         answer = WordleDictionary.FIVE_LETTER_WORDS[(int)Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length+1];
+        
         gw.addEnterListener((s) -> enterAction(s));
         
     }
@@ -34,9 +36,13 @@ public class Wordle {
                 
                 if(answerCap.substring(j,j+1).equals(gw.getSquareLetter(gw.getCurrentRow(), j))){
                     x[j] = 1;
+                    int x = answerCap.indexOf(gw.getSquareLetter(gw.getCurrentRow(), j));
+                    temp = temp.substring(0,x) + temp.substring(x+1);
                 }
-                else if(answerCap.contains(gw.getSquareLetter(gw.getCurrentRow(), j))){
+                else if(answerCap.contains(gw.getSquareLetter(gw.getCurrentRow(), j))){ // need to check again for double yellow on words we already yellowed
+                    if(!temp.contains(gw.getSquareLetter(gw.getCurrentRow(), j))){
                     x[j] = 0;
+                    }
                 }
                 
                 else{
@@ -48,12 +54,19 @@ public class Wordle {
         
         for (int z = 0; z<x.length;z++){
             if (x[z] == 0){
+                if(!gw.getKeyColor(s.substring(z,z+1)).equals(WordleGWindow.CORRECT_COLOR)){
+                gw.setKeyColor(s.substring(z,z+1), WordleGWindow.PRESENT_COLOR);
+                }
                 gw.setSquareColor(count, z, WordleGWindow.PRESENT_COLOR);
             }
             if (x[z] == 1){
+                gw.setKeyColor(s.substring(z,z+1), WordleGWindow.CORRECT_COLOR);
                 gw.setSquareColor(count, z, WordleGWindow.CORRECT_COLOR);
             }
             if (x[z] == -1){
+                if(!gw.getKeyColor(s.substring(z,z+1)).equals(WordleGWindow.PRESENT_COLOR)){
+                gw.setKeyColor(s.substring(z,z+1), WordleGWindow.MISSING_COLOR);
+                }
                 gw.setSquareColor(count, z, WordleGWindow.MISSING_COLOR);
             }
             
@@ -75,7 +88,7 @@ public class Wordle {
             if(isAllGreen(count)){
                 gw.showMessage("That was close");
             }
-            else{gw.showMessage("The answer was " + answer);}
+            else{gw.showMessage("The answer was " + answerCap.toLowerCase());}
         }
     }
     public boolean isAllGreen(int z){
