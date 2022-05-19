@@ -30,19 +30,32 @@ public class Wordle {
  */
 
     public void enterAction(String s){
-        
+            boolean v = false;
+            for(String n : WordleDictionary.FIVE_LETTER_WORDS){
+                if(s.toLowerCase().equals(n)){
+                    v=true;
+                }
+                
+            }
+            if(!v){
+                gw.showMessage("Not a valid word");
+                
+            }
+            else{
+            for(int m = 0;m<s.length();m++){
+                gw.setSquareLetter(gw.getCurrentRow(), m, s.substring(m,m+1));
+            }
         
             for(int j = 0; j<5;j++){
                 
                 if(answerCap.substring(j,j+1).equals(gw.getSquareLetter(gw.getCurrentRow(), j))){
                     x[j] = 1;
-                    int x = answerCap.indexOf(gw.getSquareLetter(gw.getCurrentRow(), j));
-                    temp = temp.substring(0,x) + temp.substring(x+1);
+                    
                 }
                 else if(answerCap.contains(gw.getSquareLetter(gw.getCurrentRow(), j))){ // need to check again for double yellow on words we already yellowed
-                    if(!temp.contains(gw.getSquareLetter(gw.getCurrentRow(), j))){
+                    
                     x[j] = 0;
-                    }
+                    
                 }
                 
                 else{
@@ -90,6 +103,7 @@ public class Wordle {
             }
             else{gw.showMessage("The answer was " + answerCap.toLowerCase());}
         }
+    }
     }
     public boolean isAllGreen(int z){
         boolean x = true;
