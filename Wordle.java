@@ -7,14 +7,17 @@
 
 import edu.willamette.cs1.wordle.WordleDictionary;
 import edu.willamette.cs1.wordle.WordleGWindow;
+import java.util.ArrayList;
 
 
 public class Wordle {
     private int count = 0;
     private String answer = WordleDictionary.FIVE_LETTER_WORDS[(int)(Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length)+1];
     private int[] x = new int [5];
-    private String answerCap = answer.toUpperCase();
-    private String temp = answerCap;
+    //private String answerCap = answer.toUpperCase();
+    private static String answerCap = "BEETS";
+    private int temp = -1;
+    private static ArrayList <Integer> u = new ArrayList<Integer>();
 
     public void run() {
         gw = new WordleGWindow();
@@ -50,11 +53,14 @@ public class Wordle {
                 
                 if(answerCap.substring(j,j+1).equals(gw.getSquareLetter(gw.getCurrentRow(), j))){
                     x[j] = 1;
+                    temp = j;
                     
                 }
-                else if(answerCap.contains(gw.getSquareLetter(gw.getCurrentRow(), j))){ // need to check again for double yellow on words we already yellowed
+                else if((answerCap.contains(gw.getSquareLetter(gw.getCurrentRow(), j)))
+                 && ((temp == -1)||(!gw.getSquareLetter(gw.getCurrentRow(), j).equals(s.substring(temp,temp+1))))){ // need to check again for double yellow on words we already yellowed
                     
                     x[j] = 0;
+
                     
                 }
                 
@@ -64,6 +70,7 @@ public class Wordle {
             
                 
             }
+            temp = -1;
         
         for (int z = 0; z<x.length;z++){
             if (x[z] == 0){
@@ -99,7 +106,7 @@ public class Wordle {
         
         else{
             if(isAllGreen(count)){
-                gw.showMessage("That was close");
+                gw.showMessage("Good job you won!");
             }
             else{gw.showMessage("The answer was " + answerCap.toLowerCase());}
         }
@@ -114,6 +121,23 @@ public class Wordle {
         }
         return x;
     }
+    public static int countEachLetter(String letter){
+        int count = 0;
+        for(int i = 0;i<answerCap.length();i++){
+            if(answerCap.substring(i,i+1).equals(letter)){
+                count ++;
+            }
+        }
+        return count;
+    }
+    public static void createLetterArray(){
+        int count = 0;
+        while(count<5){
+            count += countEachLetter(answerCap.substring(count,count+1));
+            u.add(count);
+        }
+    }
+    
 
 /* Startup code */
 
