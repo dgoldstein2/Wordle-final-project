@@ -12,12 +12,12 @@ import java.util.ArrayList;
 
 public class Wordle {
     private int count = 0;
-    private String answer = WordleDictionary.FIVE_LETTER_WORDS[(int)(Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length)+1];
+    private static String answer = WordleDictionary.FIVE_LETTER_WORDS[(int)(Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length)+1];
     private int[] x = new int [5];
     //private String answerCap = answer.toUpperCase();
-    private static String answerCap = "BEETS";
+    private static String answerCap = "BEETS"; //answer.toUpperCase();
     private int temp = -1;
-    private static ArrayList <Integer> u = new ArrayList<Integer>();
+    
 
     public void run() {
         gw = new WordleGWindow();
@@ -93,10 +93,25 @@ public class Wordle {
 
         }
         
-        if (count < WordleGWindow.N_ROWS-1) {
+        if (gw.getCurrentRow() < WordleGWindow.N_ROWS-1) {
         count++;
+        
         if(isAllGreen(gw.getCurrentRow())){
-            gw.showMessage("Fantastic");
+            if(gw.getCurrentRow() == 0)
+            gw.showMessage("Fantastic!");
+            if(gw.getCurrentRow() == 1)
+            gw.showMessage("Amazing!");
+            if(gw.getCurrentRow() == 2)
+            gw.showMessage("Wow!");
+            if(gw.getCurrentRow() == 3)
+            gw.showMessage("Good Job!");
+            if(gw.getCurrentRow() == 4)
+            gw.showMessage("Nice!");
+            for(int i = gw.getCurrentRow()+1; i<WordleGWindow.N_ROWS;i++){
+                for(int j=0;j<WordleGWindow.N_COLS;j++){
+                    gw.setSquareColor(i, j, WordleGWindow.CORRECT_COLOR);
+                }
+            }
         }
         else{gw.setCurrentRow(count);
         gw.addEnterListener((r) -> enterAction(r));
@@ -106,7 +121,8 @@ public class Wordle {
         
         else{
             if(isAllGreen(count)){
-                gw.showMessage("Good job you won!");
+                gw.showMessage("That was close!");
+                
             }
             else{gw.showMessage("The answer was " + answerCap.toLowerCase());}
         }
@@ -121,22 +137,7 @@ public class Wordle {
         }
         return x;
     }
-    public static int countEachLetter(String letter){
-        int count = 0;
-        for(int i = 0;i<answerCap.length();i++){
-            if(answerCap.substring(i,i+1).equals(letter)){
-                count ++;
-            }
-        }
-        return count;
-    }
-    public static void createLetterArray(){
-        int count = 0;
-        while(count<5){
-            count += countEachLetter(answerCap.substring(count,count+1));
-            u.add(count);
-        }
-    }
+    
     
 
 /* Startup code */
