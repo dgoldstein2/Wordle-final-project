@@ -14,17 +14,25 @@ public class Wordle {
     private int count = 0;
     private static String answer = WordleDictionary.FIVE_LETTER_WORDS[(int)(Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length)+1];
     private int[] x = new int [5];
-    //private String answerCap = answer.toUpperCase();
-    private static String answerCap = "BEETS"; //answer.toUpperCase();
+    private String [] p = new String[5];
+    private static String answerCap = "BEATS";
+    //private static String answerCap = answer.toUpperCase();
     private int temp = -1;
     
 
     public void run() {
         gw = new WordleGWindow();
         answer = WordleDictionary.FIVE_LETTER_WORDS[(int)Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length+1];
+        assign();
         
         gw.addEnterListener((s) -> enterAction(s));
         
+    }
+    public void assign(){
+        for(int i = 0;i<5;i++){
+            p[i] = answerCap.substring(i,i+1);
+            System.out.print(p[i] + " ");
+        }
     }
 
 /*
@@ -33,6 +41,7 @@ public class Wordle {
  */
 
     public void enterAction(String s){
+        
             boolean v = false;
             for(String n : WordleDictionary.FIVE_LETTER_WORDS){
                 if(s.toLowerCase().equals(n)){
@@ -47,18 +56,21 @@ public class Wordle {
             else{
             for(int m = 0;m<s.length();m++){
                 gw.setSquareLetter(gw.getCurrentRow(), m, s.substring(m,m+1));
+                p[m] = answerCap.substring(m,m+1);
             }
         
             for(int j = 0; j<5;j++){
                 
                 if(answerCap.substring(j,j+1).equals(gw.getSquareLetter(gw.getCurrentRow(), j))){
                     x[j] = 1;
-                    temp = j;
+                    print(p[j]);
+                    p[j] = "";
+                    print(p[j]);
+                    
                     
                 }
-                else if((answerCap.contains(gw.getSquareLetter(gw.getCurrentRow(), j)))
-                 && ((temp == -1)||(!gw.getSquareLetter(gw.getCurrentRow(), j).equals(s.substring(temp,temp+1))))){ // need to check again for double yellow on words we already yellowed
-                    
+                else if((answerCap.contains(gw.getSquareLetter(gw.getCurrentRow(), j))) && (find(s))){
+                 
                     x[j] = 0;
 
                     
@@ -71,6 +83,8 @@ public class Wordle {
                 
             }
             temp = -1;
+            for(int l : x)
+            System.out.println(l);
         
         for (int z = 0; z<x.length;z++){
             if (x[z] == 0){
@@ -136,6 +150,18 @@ public class Wordle {
             }
         }
         return x;
+    }
+    public boolean find(String o){
+        boolean temp = false;
+        for(String h : p){
+            if(o.contains(h)){
+                temp = true;
+            }
+        }
+        return temp;
+    }
+    public static void print(String ee){
+        System.out.print(ee);
     }
     
     
