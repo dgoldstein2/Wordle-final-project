@@ -63,14 +63,15 @@ public class Wordle {
                 
                 if(answerCap.substring(j,j+1).equals(gw.getSquareLetter(gw.getCurrentRow(), j))){
                     x[j] = 1;
-                    print(p[j]);
+                    println(p[j]);
                     p[j] = "";
-                    print(p[j]);
+                    println(p[j]);
+                    
                     
                     
                 }
-                else if((answerCap.contains(gw.getSquareLetter(gw.getCurrentRow(), j))) && (find(s))){
-                 
+                else if((answerCap.contains(gw.getSquareLetter(gw.getCurrentRow(), j))) && (find(s.substring(j,j+1))>-1)){
+                    println(find(s.substring(j,j+1)));
                     x[j] = 0;
 
                     
@@ -96,6 +97,13 @@ public class Wordle {
             if (x[z] == 1){
                 gw.setKeyColor(s.substring(z,z+1), WordleGWindow.CORRECT_COLOR);
                 gw.setSquareColor(count, z, WordleGWindow.CORRECT_COLOR);
+                for(int o=0;o<z;o++){
+                    if((gw.getSquareLetter(gw.getCurrentRow(), z).equals(gw.getSquareLetter(gw.getCurrentRow(),o))) && (gw.getSquareColor(gw.getCurrentRow(), o).equals(WordleGWindow.PRESENT_COLOR))
+                     && (find(gw.getSquareLetter(gw.getCurrentRow(),o))>0)){
+                        gw.setSquareColor(gw.getCurrentRow(), o, WordleGWindow.MISSING_COLOR);
+                        println(1);
+                    }
+                }
             }
             if (x[z] == -1){
                 if(!gw.getKeyColor(s.substring(z,z+1)).equals(WordleGWindow.PRESENT_COLOR)){
@@ -151,17 +159,20 @@ public class Wordle {
         }
         return x;
     }
-    public boolean find(String o){
-        boolean temp = false;
-        for(String h : p){
-            if(o.contains(h)){
-                temp = true;
+    public int find(String o){
+        int temp = -1;
+        for(int i = 0; i<p.length;i++){
+            if(o.equals(p[i])){
+                temp = i;
             }
         }
         return temp;
     }
-    public static void print(String ee){
+    public static void print(Object ee){
         System.out.print(ee);
+    }
+    public static void println(Object ee){
+        System.out.println(ee);
     }
     
     

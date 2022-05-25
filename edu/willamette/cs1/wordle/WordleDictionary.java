@@ -17,7 +17,7 @@ public class WordleDictionary {
  * String array containing the legal words in Wordle.
  */
 
-    public static final String[] FIVE_LETTER_WORDS = {
+    public static final String[] FIVE_LETTER_WORDS = { 
         "aahed", "aalii", "abaca", "abaci", "aback", "abaft", "abamp",
         "abase", "abash", "abate", "abbas", "abbey", "abbot", "abeam",
         "abets", "abhor", "abide", "abled", "abler", "abmho", "abode",
