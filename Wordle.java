@@ -15,7 +15,7 @@ public class Wordle {
     private static String answer = WordleDictionary.FIVE_LETTER_WORDS[(int)(Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length)+1];
     private int[] x = new int [5];
     private String [] p = new String[5];
-    private static String answerCap = "BEATS";
+    private static String answerCap = "EEPSE";
     //private static String answerCap = answer.toUpperCase();
     private int temp = -1;
     
@@ -98,10 +98,12 @@ public class Wordle {
                 gw.setKeyColor(s.substring(z,z+1), WordleGWindow.CORRECT_COLOR);
                 gw.setSquareColor(count, z, WordleGWindow.CORRECT_COLOR);
                 for(int o=0;o<z;o++){
-                    if((gw.getSquareLetter(gw.getCurrentRow(), z).equals(gw.getSquareLetter(gw.getCurrentRow(),o))) && (gw.getSquareColor(gw.getCurrentRow(), o).equals(WordleGWindow.PRESENT_COLOR))
-                     && (find(gw.getSquareLetter(gw.getCurrentRow(),o))>0)){
+                    if((gw.getSquareLetter(gw.getCurrentRow(), z).equals(gw.getSquareLetter(gw.getCurrentRow(),o)))
+                     && (gw.getSquareColor(gw.getCurrentRow(), o).equals(WordleGWindow.PRESENT_COLOR)))
+                     //&& (find(gw.getSquareLetter(gw.getCurrentRow(),o))>-1))
+                     {
                         gw.setSquareColor(gw.getCurrentRow(), o, WordleGWindow.MISSING_COLOR);
-                        println(1);
+                        println("found and work");
                     }
                 }
             }
