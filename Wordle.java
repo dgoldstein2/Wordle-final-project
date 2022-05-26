@@ -12,11 +12,11 @@ import java.util.ArrayList;
 
 public class Wordle {
     private int count = 0;
-    private static String answer = WordleDictionary.FIVE_LETTER_WORDS[(int)(Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length)+1];
+    private static String answer = WordleDictionary.x.get((int)(Math.random()*WordleDictionary.x.size()));
     private int[] x = new int [5];
     private String [] p = new String[5];
-    private static String answerCap = "EEPSE";
-    //private static String answerCap = answer.toUpperCase();
+    //private static String answerCap = "EEPSE";
+    private static String answerCap = answer;
     private int temp = -1;
     
 
