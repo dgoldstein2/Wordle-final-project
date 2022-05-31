@@ -12,7 +12,9 @@ import java.util.ArrayList;
 
 public class Wordle {
     private int count = 0;
-    private static String answer = WordleDictionary.x.get((int)(Math.random()*WordleDictionary.x.size()));
+    private static ArrayList<String> ba = betterWords.BETTER_ANSWERS();
+    
+    private static String answer = ba.get((int)(Math.random()*ba.size()));
     private int[] x = new int [5];
     private String [] p = new String[5];
     //private static String answerCap = "EEPSE";
@@ -21,8 +23,9 @@ public class Wordle {
     
 
     public void run() {
+        betterWords.BETTER_ANSWERS();
         gw = new WordleGWindow();
-        answer = WordleDictionary.FIVE_LETTER_WORDS[(int)Math.random()*WordleDictionary.FIVE_LETTER_WORDS.length+1];
+        
         assign();
         
         gw.addEnterListener((s) -> enterAction(s));
@@ -34,6 +37,7 @@ public class Wordle {
             System.out.print(p[i] + " ");
         }
     }
+
 
 /*
  * Called when the user hits the RETURN key or clicks the ENTER button,
@@ -182,6 +186,8 @@ public class Wordle {
 /* Startup code */
 
     public static void main(String[] args) {
+        
+        
         new Wordle().run();
     }
 
